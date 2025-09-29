@@ -20,7 +20,7 @@ export default async function RootLayout({ children }) {
       <body>
         <div >
           <Header links={links} />
-          <main className="container">{children}</main>
+          <main>{children}</main>
           <Footer />
         </div>
       </body>

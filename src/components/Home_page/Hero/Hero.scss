@@ -1,0 +1,171 @@
+@import '@/functions/scss/scssFunctions.scss';
+@import '@/functions/scss/scssVariables.scss';
+@import '@/app/colors.scss';
+
+.homepage-hero-block {
+    position: relative;
+    display: flex;
+    flex: 1 1 100%;
+    background: black;
+    overflow: hidden;
+   
+    .stars-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+    }
+
+    .hero-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        z-index: 1;
+    }
+    .responsive-container {
+  
+        max-width: 1440px;
+        margin: 0 auto;
+    .content-wrapper{
+        // position: relative;
+        z-index: 2;
+        flex: 1 1 325vw;
+        display: flex;
+        flex-direction: column;
+        margin: pxToRem(86.68) pxToRem(21.86) pxToRem(136.68) pxToRem(28.14);
+
+
+        h1 {
+            margin-right: pxToRem(54.59);
+            color: $white;
+            text-align: left;
+            font-family: "Wallnutt Corps";
+            font-size: pxToRem(50);
+            font-style: normal;
+            font-weight: 400;           
+             line-height: pxToRem(49);
+            @media (min-width: calc(#{$mobile} + 1px)) {
+            line-height: pxToRem(120);
+            }
+
+            .gradient-text {
+                background: $beautyGreen;
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+
+        p {
+            text-overflow: wrap;
+            margin: pxToRem(16) pxToRem(54.59) pxToRem(24) pxToRem(0);
+            color: var(--Main_2, $white);
+            font-size: pxToRem(15);
+            font-style: normal;
+            font-weight: 400;
+            line-height: pxToRem(22);
+        }
+
+        .joinud-btn {
+            width: pxToRem(170);
+            display: flex;
+            box-sizing: border-box;
+            padding: pxToRem(8.824) pxToRem(29.412);
+            justify-content: center;
+            align-items: center;
+            gap: pxToRem(7.353);
+            border-radius: pxToRem(1.471);
+            border: pxToRem(1.471) solid $gradient-green;
+            color: $white;
+            font-size: pxToRem(15);
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            text-transform: uppercase;
+            margin-right: pxToRem(200.18);
+        }
+        &:hover {
+            .joinud-btn {
+                background-color: $gradient-green;
+                border-radius: pxToRem(1.471);
+                border: pxToRem(1.471) solid white;
+                transition: all 0.35s linear;   
+            }
+        }
+    }
+
+    // Desktop styles for hero
+    @media (min-width: calc(#{$mobile} + 1px)) {
+        flex: 1 1 100%;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: flex;
+
+        .content-wrapper {
+            display: flex;
+            flex: 1 1 100%;
+            flex-direction: column;
+            // margin: pxToRem(73.23) pxToRem(515) pxToRem(123) pxToRem(201);
+
+            h1 {
+                font-size: pxToRem(120);
+                font-style: normal;
+                font-weight: 400;
+                line-height: pxToRem(135);
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
+
+                .gradient-text {
+                    background: $beautyGreen;
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    color: transparent;
+                    display: inline-block;
+                }
+            }
+
+            p {
+                margin-top: pxToRem(42);
+                width: pxToRem(780.93);
+                height: pxToRem(120.386);
+                color: $white;
+                font-size: pxToRem(24);
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+
+            .joinud-btn {
+                display: flex;
+                box-sizing: border-box;
+                width: pxToRem(170.93);
+                padding: pxToRem(10) pxToRem(20);
+                height: pxToRem(35);
+                justify-content: center;
+                align-items: center;
+                gap: pxToRem(7.353);
+                border-radius: pxToRem(1.471);
+                border: pxToRem(1.471) solid $gradient-green;
+                color: $white;
+                font-size: pxToRem(15);
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+                text-transform: uppercase;
+            }
+        }
+    }
+}
+
+}

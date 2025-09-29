@@ -26,9 +26,9 @@ export default function Footer() {
     // Initialize stars manually after component mounts
     const initStars = () => {
       if (typeof window !== 'undefined' && window.StarsBackground) {
-        const starsContainer = document.querySelector('.stars-container');
-        if (starsContainer) {
-          new window.StarsBackground(starsContainer);
+        const footerStarsContainer = document.querySelector('footer .stars-container');
+        if (footerStarsContainer) {
+          new window.StarsBackground(footerStarsContainer);
         }
       }
     };
@@ -54,10 +54,10 @@ export default function Footer() {
         src="/resources/js/starsBackground.js" 
         strategy="afterInteractive"
         onLoad={() => {
-          // Initialize stars when script loads
-          const starsContainer = document.querySelector('.stars-container');
-          if (starsContainer && window.StarsBackground) {
-            new window.StarsBackground(starsContainer);
+          // Initialize stars when script loads - target footer's stars container specifically
+          const footerStarsContainer = document.querySelector('footer .stars-container');
+          if (footerStarsContainer && window.StarsBackground) {
+            new window.StarsBackground(footerStarsContainer);
           }
         }}
       />
