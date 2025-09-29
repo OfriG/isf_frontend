@@ -114,3 +114,4 @@ This frontend connects to the ISF Strapi backend. Make sure the backend is runni
 
 ## Support
 For support and questions, please refer to the [Next.js documentation](https://nextjs.org/docs).
+# isf_frontend
