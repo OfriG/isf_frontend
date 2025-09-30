@@ -30,27 +30,6 @@ export default function NewsLetter() {
 
             <div className="newsletter_button">{newsLetter.newsletter?.button.text} </div>
             <div className="newsletter_line">_</div>
-            <div className="newsletter_menu">
-            <div className="newsletter_left_menu">
-                <ul>
-                    {newsLetter.left_menu?.map((item) => (
-                        <li key={item.id}>
-                            <a href={`/${item.url}`}>{item.title}</a>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-
-            <div>
-                <ul>
-                    {newsLetter.right_menu?.map((item) => (
-                        <li key={item.id}>
-                            <a href={`/${item.url}`}>{item.title}</a>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-        </div></div>
+</div>
     );
 }

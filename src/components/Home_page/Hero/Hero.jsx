@@ -9,7 +9,7 @@ async function getHeroData() {
         cache: "no-store",
     });
     const data = await res.json();
-    return data.data;
+    return data.data[0].home_page.filter(item => item.__component === 'hp-hero.hp-hero');
 }
 
 export default function Hero() {
@@ -38,36 +38,31 @@ export default function Hero() {
             <div id={`homepage-hero-${Date.now()}`} className="homepage-hero homepage-hero-block">
                 <div className="stars-container"></div>
             
-            <div className="responsive-container">
-                <div className="content-wrapper">
-                    {
-                        heroData.map((item) => {
-                                return item.home_page.map((heroItem) => (
-                                    <div key={`${item.id}-${heroItem.id}`}>
-                                        <h1>
-                                            {heroItem.header}
-                                            {heroItem.hilight_header && (
-                                                <>
-                                                    <br />
-                                                    <span className="gradient-text">{heroItem.hilight_header}</span>
-                                                </>
-                                            )}
-                                        </h1>
+                <div className="responsive-container">
+                    <div className="content-wrapper">
+                        {heroData.map(heroItem => (
+                            <div key={heroItem.id}>
+                                <h1>
+                                    {heroItem.header}
+                                    {heroItem.hilight_header && (
+                                        <>
+                                            <br />
+                                            <span className="gradient-text">{heroItem.hilight_header}</span>
+                                        </>
+                                    )}
+                                </h1>
 
-                                        <p>{heroItem.description}</p>
+                                <p>{heroItem.description}</p>
 
-                                        {heroItem.button && (
-                                            <a className="joinud-btn" href={heroItem.button.url} target={heroItem.button.target || '_self'}>
-                                                {heroItem.button.text}
-                                            </a>
-                                        )}
-                                    </div>
-                                ));
-                           
-                        })
-                    }
+                                {heroItem.button && (
+                                    <a className="joinud-btn" href={heroItem.button.url} target={heroItem.button.target || '_self'}>
+                                        {heroItem.button.text}
+                                    </a>
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
             </div>
         </>
     );
