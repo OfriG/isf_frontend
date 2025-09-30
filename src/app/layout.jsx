@@ -1,5 +1,4 @@
-import React from "react";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer/Footer";
 import "./globals.css";
 import Header from "@/components/Header/Header";
 
@@ -19,12 +18,10 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <div className="bg-bg-tertiary min-h-[100dvh] grid grid-rows-[auto_1fr_auto]">
+        <div >
           <Header links={links} />
-          <main className="container">{children}</main>
-          <div className="container">
-            <Footer />
-          </div>
+          <main>{children}</main>
+          <Footer />
         </div>
       </body>
     </html>
