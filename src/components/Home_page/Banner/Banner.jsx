@@ -34,6 +34,7 @@ export default function Banner(){
 <div className="bg-background bg-gradient-to-r from-green-500 to-blue-500 h-full">
   <div className="pl-[5.74125rem] pr-[5.74125rem] pb-[5.102rem] pt-[5.75875rem] 
                   md:pt-[1.831rem] md:pr-[11.13rem] md:pb-[2.115rem] md:pl-[13.053rem]">
+<div className="relative mx-auto max-w-[1440px]">
 
     <div className="flex flex-col md:flex-row md:items-center">
       {bannerComponent.header_description?.map((stat, index) => (
@@ -57,7 +58,7 @@ export default function Banner(){
     </div>
 
   </div>
-</div>
+</div></div>
 
     );
 
