@@ -17,18 +17,16 @@ export default async function Home() {
       <Hero/>
       <Banner/>
       
-    </div>
       <h1>Our Team</h1>
       <div>
         {members.map(member => {
           return (
-            <div>
-              <Link href={`/our-team/${member.slug}`} >{member.name}</Link>
+            <div key={member.slug}>
+              <Link href={`/our-team/${member.slug}`}>{member.name}</Link>
             </div>
           )
         })}
       </div>
-    </div >
-
+    </div>
   );
 }
