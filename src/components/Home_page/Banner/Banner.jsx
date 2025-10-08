@@ -3,19 +3,47 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 
 async function getBannerData(){
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}/api/pages?populate[home_page][populate]=*`, {
-        cache: "no-store",
-    });
-    const data = await res.json();
-    return data.data;
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        
+        const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}/api/pages?populate[home_page][populate]=*`, {
+            cache: "no-store",
+            signal: controller.signal,
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!res.ok) {
+            throw new Error('Failed to fetch banner data');
+        }
+        
+        const data = await res.json();
+        return data.data || [];
+    } catch (error) {
+        console.log('Failed to fetch banner data:', error.message);
+        return [];
+    }
 }
 
 export default function Banner(){
     const [bannerData, setBannerData] = useState(null);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
-        getBannerData().then(setBannerData);
+        getBannerData()
+            .then(data => {
+                setBannerData(data);
+                if (!data || data.length === 0) {
+                    setError(true);
+                }
+            })
+            .catch(() => setError(true));
     }, []);
+
+    if (error) {
+        return null; // Render nothing if data unavailable
+    }
 
     if (!bannerData) {
         return <div>Loading...</div>;
@@ -27,7 +55,7 @@ export default function Banner(){
     );
 
     if (!bannerComponent) {
-        return <div>No banner data found</div>;
+        return null; // Render nothing if no banner data
     }
 
     return (

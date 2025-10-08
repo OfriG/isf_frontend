@@ -8,33 +8,56 @@ import { useEffect, useState } from "react";
 import Logo from "../logo";
 
 async function getFooterData() {
-  const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337';
 
-  const urls = {
-    oldFooter: `${baseUrl}/api/footer?populate=*`,
-    newFooter: `${baseUrl}/api/new-footer-api?populate=*`,
-    gallery: `${baseUrl}/api/footer?populate[footer_gallery][populate]=*`
-  };
+    const urls = {
+      oldFooter: `${baseUrl}/api/footer?populate=*`,
+      newFooter: `${baseUrl}/api/new-footer-api?populate=*`,
+      gallery: `${baseUrl}/api/footer?populate[footer_gallery][populate]=*`
+    };
 
-  const [oldRes, newRes, galleryRes] = await Promise.all([
-    fetch(urls.oldFooter, { cache: 'no-store' }),
-    fetch(urls.newFooter, { cache: 'no-store' }),
-    fetch(urls.gallery, { cache: 'no-store' })
-  ]);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-  const [oldData, newData, galleryData] = await Promise.all([oldRes.json(), newRes.json(), galleryRes.json()]);
+    const [oldRes, newRes, galleryRes] = await Promise.all([
+      fetch(urls.oldFooter, { cache: 'no-store', signal: controller.signal }),
+      fetch(urls.newFooter, { cache: 'no-store', signal: controller.signal }),
+      fetch(urls.gallery, { cache: 'no-store', signal: controller.signal })
+    ]);
 
-  return {
-    oldFooter: oldData.data,
-    newFooter: newData.data,
-    gallery: galleryData.data
-  };
+    clearTimeout(timeoutId);
+
+    if (!oldRes.ok || !newRes.ok || !galleryRes.ok) {
+      throw new Error('Failed to fetch footer data');
+    }
+
+    const [oldData, newData, galleryData] = await Promise.all([oldRes.json(), newRes.json(), galleryRes.json()]);
+
+    return {
+      oldFooter: oldData.data,
+      newFooter: newData.data,
+      gallery: galleryData.data
+    };
+  } catch (error) {
+    console.log('Failed to fetch footer data:', error.message);
+    return null;
+  }
 }
 
 export default function Footer() {
   const [footerData, setFooterData] = useState(null);
+  const [error, setError] = useState(false);
+  
   useEffect(() => {
-    getFooterData().then(setFooterData);
+    getFooterData()
+      .then(data => {
+        setFooterData(data);
+        if (!data) {
+          setError(true);
+        }
+      })
+      .catch(() => setError(true));
   }, []);
 
   useEffect(() => {
@@ -51,10 +74,21 @@ export default function Footer() {
     return () => clearTimeout(timeoutId);
   }, []);
 
-  if (!footerData) return <div>Loading...</div>;
+  if (error) {
+    return null; // Render nothing if data unavailable
+  }
+
+  if (!footerData) {
+    return <div>Loading...</div>;
+  }
 
   const oldFooter = footerData.oldFooter;
   const gallery = footerData.gallery;
+  
+  // If essential data is missing, don't render the footer
+  if (!oldFooter) {
+    return null;
+  }
   
   // Debug: Log the footer data to see if logos are loaded
   console.log('Footer data:', oldFooter);

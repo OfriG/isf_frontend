@@ -5,22 +5,54 @@ import Script from "next/script";
 import { useEffect, useState } from "react";
 
 async function getHeroData() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}/api/pages?populate[home_page][populate]=*`, {
-        cache: "no-store",
-    });
-    const data = await res.json();
-    return data.data[0].home_page.filter(item => item.__component === 'hp-hero.hp-hero');
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 5000);
+        
+        const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}/api/pages?populate[home_page][populate]=*`, {
+            cache: "no-store",
+            signal: controller.signal,
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (!res.ok) {
+            throw new Error('Failed to fetch hero data');
+        }
+        
+        const data = await res.json();
+        return data.data?.[0]?.home_page?.filter(item => item.__component === 'hp-hero.hp-hero') || [];
+    } catch (error) {
+        console.log('Failed to fetch hero data:', error.message);
+        return [];
+    }
 }
 
 export default function Hero() {
     const [heroData, setHeroData] = useState(null);
+    const [error, setError] = useState(false);
 
     useEffect(() => {
-        getHeroData().then(setHeroData);
+        getHeroData()
+            .then(data => {
+                setHeroData(data);
+                if (!data || data.length === 0) {
+                    setError(true);
+                }
+            })
+            .catch(() => setError(true));
     }, []);
+
+    if (error) {
+        return null; // Render nothing if data unavailable
+    }
 
     if (!heroData) {
         return <div>Loading...</div>;
+    }
+    
+    if (heroData.length === 0) {
+        return null; // Render nothing if no hero data
     }
     
     return (
