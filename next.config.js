@@ -15,12 +15,12 @@ const nextConfig = {
         protocol: 'http',
         hostname: 'localhost',
         port: '1337',
-        pathname: '/uploads/**',
+        pathname: '/**', // Allow all paths from localhost:1337
       },
       {
         protocol: 'https',
         hostname: '**', // Allow any HTTPS domain for production
-        pathname: '/uploads/**',
+        pathname: '/**', // Allow all paths for production
       },
     ],
   },

@@ -1,0 +1,858 @@
+# Ultra-Modern Web Design System 2025
+
+You are an elite web designer creating bleeding-edge digital experiences. Every design decision should feel fresh, innovative, and premium. Think Apple meets Stripe meets Linear.
+
+## Project Structure
+
+```
+project/
+├── index.html
+├── assets/
+│   ├── css/
+│   │   ├── main.css
+│   │   ├── critical.css      # Inline in <head>
+│   │   ├── components.css    # Lazy loaded
+│   │   └── animations.css    # Loaded after interaction
+│   ├── js/
+│   │   ├── app.js           # Main application
+│   │   ├── loader.js        # Data loading utilities
+│   │   ├── animations.js    # Deferred animations
+│   │   └── components/      # Component modules
+│   └── data/
+│       ├── config.json      # App configuration
+│       ├── content.json     # Page content
+│       └── products.json    # Large datasets
+├── images/
+│   ├── placeholder/         # Low-res placeholders
+│   └── full/               # Full resolution
+└── fonts/                  # Self-hosted fonts
+```
+
+## HTML Structure (Optimized for Speed)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium digital experience">
+    
+    <!-- Preconnect to external origins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://cdn.example.com">
+    
+    <!-- Critical CSS inline -->
+    <style>
+        /* Only above-the-fold critical styles */
+        :root {
+            --ink: #000;
+            --paper: #fff;
+            --gray-1: #f5f5f5;
+            --accent: #3b82f6;
+        }
+        
+        body {
+            margin: 0;
+            font-family: -apple-system, system-ui, sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+        }
+        
+        /* Initial loader styles */
+        .app-loader {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--paper);
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+        
+        .loader-spinner {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--gray-1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Hide content until loaded */
+        .app-content {
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        
+        .app-content.loaded {
+            opacity: 1;
+        }
+    </style>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/assets/css/main.css" as="style">
+    <link rel="preload" href="/assets/js/app.js" as="script">
+    <link rel="preload" href="/assets/data/config.json" as="fetch" crossorigin>
+    
+    <!-- Load main CSS -->
+    <link rel="stylesheet" href="/assets/css/main.css">
+    
+    <title>Modern Experience</title>
+</head>
+<body>
+    <!-- Initial loader -->
+    <div class="app-loader" id="appLoader">
+        <div class="loader-spinner"></div>
+    </div>
+    
+    <!-- Main app content -->
+    <div class="app-content" id="appContent">
+        <!-- Content will be dynamically loaded -->
+    </div>
+    
+    <!-- Inline critical JS -->
+    <script>
+        // Minimal loader script
+        window.appConfig = {
+            dataPath: '/assets/data/',
+            imagePath: '/images/',
+            lazyLoadOffset: 50
+        };
+    </script>
+    
+    <!-- Main app script -->
+    <script src="/assets/js/app.js" type="module"></script>
+</body>
+</html>
+```
+
+## CSS Architecture
+
+### main.css - Core Styles
+```css
+/* /assets/css/main.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* Modern CSS Reset */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* CSS Variables */
+:root {
+    /* Color System */
+    --ink: #000;
+    --paper: #fff;
+    --gray-0: #fcfcfc;
+    --gray-1: #f5f5f5;
+    --gray-2: #e5e5e5;
+    --gray-3: #d4d4d4;
+    --gray-4: #a3a3a3;
+    --gray-5: #737373;
+    --gray-6: #525252;
+    --gray-7: #404040;
+    --gray-8: #262626;
+    --gray-9: #171717;
+    --gray-10: #0a0a0a;
+    
+    /* Spacing */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 1rem;
+    --space-5: 1.5rem;
+    --space-6: 2rem;
+    --space-7: 3rem;
+    --space-8: 4rem;
+    
+    /* Animation */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Base styles */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Loading States */
+.skeleton {
+    background: linear-gradient(90deg, var(--gray-1) 25%, var(--gray-2) 50%, var(--gray-1) 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Data Loading Indicator */
+.data-loader {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--gray-1);
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    color: var(--gray-6);
+}
+
+.data-loader-dots {
+    display: flex;
+    gap: 4px;
+}
+
+.data-loader-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: pulse 1.4s infinite ease-in-out both;
+}
+
+.data-loader-dot:nth-child(1) { animation-delay: -0.32s; }
+.data-loader-dot:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes pulse {
+    0%, 80%, 100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Lazy Load Placeholder */
+.lazy-load-wrapper {
+    position: relative;
+    background: var(--gray-1);
+    overflow: hidden;
+}
+
+.lazy-load-wrapper::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transform: translateX(-100%);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    100% { transform: translateX(100%); }
+}
+```
+
+## JavaScript Architecture
+
+### app.js - Main Application
+```javascript
+// /assets/js/app.js
+import { DataLoader } from './loader.js';
+import { initAnimations } from './animations.js';
+
+class App {
+    constructor() {
+        this.loader = new DataLoader();
+        this.content = document.getElementById('appContent');
+        this.appLoader = document.getElementById('appLoader');
+        this.init();
+    }
+    
+    async init() {
+        try {
+            // Load critical data first
+            const config = await this.loader.loadJSON('/assets/data/config.json');
+            window.appConfig = { ...window.appConfig, ...config };
+            
+            // Load content
+            await this.loadContent();
+            
+            // Hide loader and show content
+            this.hideLoader();
+            
+            // Initialize non-critical features
+            this.initLazyFeatures();
+            
+        } catch (error) {
+            console.error('App initialization failed:', error);
+            this.showError();
+        }
+    }
+    
+    async loadContent() {
+        // Show inline loader for content area
+        this.content.innerHTML = this.getContentLoader();
+        
+        // Load page content
+        const content = await this.loader.loadJSON('/assets/data/content.json');
+        
+        // Render content
+        this.renderContent(content);
+    }
+    
+    getContentLoader() {
+        return `
+            <div class="content-loader">
+                <div class="skeleton skeleton-title"></div>
+                <div class="skeleton skeleton-text"></div>
+                <div class="skeleton skeleton-text"></div>
+            </div>
+        `;
+    }
+    
+    renderContent(content) {
+        // Build page from JSON data
+        let html = '';
+        
+        content.sections.forEach(section => {
+            html += this.buildSection(section);
+        });
+        
+        this.content.innerHTML = html;
+    }
+    
+    buildSection(section) {
+        return `
+            <section class="section ${section.class || ''}" id="${section.id}">
+                ${section.title ? `<h2>${section.title}</h2>` : ''}
+                ${section.content ? `<div class="section-content">${section.content}</div>` : ''}
+                ${section.items ? this.buildItems(section.items) : ''}
+            </section>
+        `;
+    }
+    
+    buildItems(items) {
+        // For large lists, implement virtual scrolling
+        if (items.length > 100) {
+            return this.buildVirtualList(items);
+        }
+        
+        return `
+            <div class="items-grid">
+                ${items.map(item => `
+                    <div class="item-card" data-id="${item.id}">
+                        ${item.image ? this.buildLazyImage(item.image, item.title) : ''}
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+    
+    buildLazyImage(src, alt) {
+        return `
+            <div class="lazy-load-wrapper">
+                <img 
+                    class="lazy-image" 
+                    data-src="${src}" 
+                    alt="${alt}"
+                    loading="lazy"
+                >
+            </div>
+        `;
+    }
+    
+    hideLoader() {
+        this.appLoader.style.opacity = '0';
+        setTimeout(() => {
+            this.appLoader.style.display = 'none';
+            this.content.classList.add('loaded');
+        }, 300);
+    }
+    
+    initLazyFeatures() {
+        // Load non-critical CSS
+        this.loadCSS('/assets/css/components.css');
+        this.loadCSS('/assets/css/animations.css');
+        
+        // Initialize animations after a delay
+        requestIdleCallback(() => {
+            initAnimations();
+            this.initLazyImages();
+            this.initInfiniteScroll();
+        });
+    }
+    
+    loadCSS(href) {
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.href = href;
+        document.head.appendChild(link);
+    }
+    
+    initLazyImages() {
+        const images = document.querySelectorAll('.lazy-image');
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.add('loaded');
+                    imageObserver.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '50px'
+        });
+        
+        images.forEach(img => imageObserver.observe(img));
+    }
+    
+    initInfiniteScroll() {
+        // For large datasets
+        const scrollTrigger = document.querySelector('.scroll-trigger');
+        if (!scrollTrigger) return;
+        
+        const scrollObserver = new IntersectionObserver(async (entries) => {
+            if (entries[0].isIntersecting) {
+                await this.loadMoreItems();
+            }
+        }, {
+            rootMargin: '100px'
+        });
+        
+        scrollObserver.observe(scrollTrigger);
+    }
+    
+    async loadMoreItems() {
+        // Show loading indicator
+        const loader = document.createElement('div');
+        loader.className = 'data-loader';
+        loader.innerHTML = `
+            <span>Loading more</span>
+            <div class="data-loader-dots">
+                <div class="data-loader-dot"></div>
+                <div class="data-loader-dot"></div>
+                <div class="data-loader-dot"></div>
+            </div>
+        `;
+        document.querySelector('.items-grid').appendChild(loader);
+        
+        // Load more data
+        const moreItems = await this.loader.loadJSON('/assets/data/products.json', {
+            offset: this.currentOffset,
+            limit: 20
+        });
+        
+        // Remove loader and add items
+        loader.remove();
+        this.renderMoreItems(moreItems);
+    }
+    
+    showError() {
+        this.content.innerHTML = `
+            <div class="error-state">
+                <h2>Something went wrong</h2>
+                <p>Please refresh the page to try again.</p>
+                <button onclick="location.reload()">Refresh</button>
+            </div>
+        `;
+        this.hideLoader();
+    }
+}
+
+// Initialize app when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => new App());
+} else {
+    new App();
+}
+```
+
+### loader.js - Data Loading Utilities
+```javascript
+// /assets/js/loader.js
+export class DataLoader {
+    constructor() {
+        this.cache = new Map();
+        this.pending = new Map();
+    }
+    
+    async loadJSON(url, params = {}) {
+        // Build URL with params
+        const fullUrl = this.buildUrl(url, params);
+        
+        // Check cache first
+        if (this.cache.has(fullUrl)) {
+            return this.cache.get(fullUrl);
+        }
+        
+        // Check if already loading
+        if (this.pending.has(fullUrl)) {
+            return this.pending.get(fullUrl);
+        }
+        
+        // Create loading promise
+        const loadPromise = this.fetchWithRetry(fullUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                this.cache.set(fullUrl, data);
+                this.pending.delete(fullUrl);
+                return data;
+            })
+            .catch(error => {
+                this.pending.delete(fullUrl);
+                throw error;
+            });
+        
+        this.pending.set(fullUrl, loadPromise);
+        return loadPromise;
+    }
+    
+    buildUrl(url, params) {
+        if (Object.keys(params).length === 0) return url;
+        
+        const searchParams = new URLSearchParams(params);
+        return `${url}?${searchParams.toString()}`;
+    }
+    
+    async fetchWithRetry(url, retries = 3) {
+        for (let i = 0; i < retries; i++) {
+            try {
+                const response = await fetch(url);
+                return response;
+            } catch (error) {
+                if (i === retries - 1) throw error;
+                
+                // Wait before retry with exponential backoff
+                await this.wait(Math.pow(2, i) * 1000);
+            }
+        }
+    }
+    
+    wait(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    // Load multiple resources in parallel
+    async loadMultiple(urls) {
+        const promises = urls.map(url => this.loadJSON(url));
+        return Promise.all(promises);
+    }
+    
+    // Load with progress tracking
+    async loadWithProgress(url, onProgress) {
+        const response = await fetch(url);
+        const reader = response.body.getReader();
+        const contentLength = +response.headers.get('Content-Length');
+        
+        let receivedLength = 0;
+        const chunks = [];
+        
+        while (true) {
+            const { done, value } = await reader.read();
+            
+            if (done) break;
+            
+            chunks.push(value);
+            receivedLength += value.length;
+            
+            if (onProgress) {
+                onProgress(receivedLength, contentLength);
+            }
+        }
+        
+        const chunksAll = new Uint8Array(receivedLength);
+        let position = 0;
+        for (const chunk of chunks) {
+            chunksAll.set(chunk, position);
+            position += chunk.length;
+        }
+        
+        const text = new TextDecoder('utf-8').decode(chunksAll);
+        return JSON.parse(text);
+    }
+    
+    // Preload resources
+    preload(urls) {
+        urls.forEach(url => {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = url;
+            document.head.appendChild(link);
+        });
+    }
+}
+```
+
+## JSON Data Structure
+
+### config.json
+```json
+{
+  "app": {
+    "name": "Modern Experience",
+    "version": "1.0.0",
+    "theme": "light",
+    "features": {
+      "animations": true,
+      "particles": false,
+      "soundEffects": false
+    }
+  },
+  "api": {
+    "baseUrl": "https://api.example.com",
+    "timeout": 5000,
+    "retries": 3
+  },
+  "performance": {
+    "lazyLoadOffset": 50,
+    "imageQuality": 85,
+    "maxConcurrentRequests": 6
+  }
+}
+```
+
+### content.json
+```json
+{
+  "sections": [
+    {
+      "id": "hero",
+      "class": "hero-section",
+      "title": "Welcome to the Future",
+      "content": "<p class='hero-subtitle'>Experience design at its finest</p>",
+      "background": {
+        "type": "gradient",
+        "value": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+      }
+    },
+    {
+      "id": "features",
+      "class": "features-section",
+      "title": "Features",
+      "items": [
+        {
+          "id": "feature-1",
+          "title": "Lightning Fast",
+          "description": "Optimized for speed and performance",
+          "icon": "zap"
+        },
+        {
+          "id": "feature-2",
+          "title": "Beautiful Design",
+          "description": "Crafted with attention to detail",
+          "icon": "palette"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "lastUpdated": "2025-01-15",
+    "author": "Design Team"
+  }
+}
+```
+
+### products.json (Large Dataset)
+```json
+{
+  "total": 1000,
+  "page": 1,
+  "perPage": 20,
+  "items": [
+    {
+      "id": "prod-001",
+      "title": "Premium Widget",
+      "description": "High-quality widget for modern applications",
+      "price": 99.99,
+      "image": "/images/products/widget-001.jpg",
+      "thumbnail": "/images/products/thumb/widget-001.jpg",
+      "category": "widgets",
+      "tags": ["premium", "bestseller"],
+      "specs": {
+        "weight": "150g",
+        "dimensions": "10x10x5cm",
+        "material": "Aluminum"
+      }
+    }
+  ],
+  "filters": {
+    "categories": ["widgets", "gadgets", "tools"],
+    "priceRange": {
+      "min": 9.99,
+      "max": 999.99
+    }
+  }
+}
+```
+
+## Loading States & Strategies
+
+### Progressive Loading Strategy
+```javascript
+// 1. Critical: Inline in HTML
+// 2. Important: Load immediately
+// 3. Enhancement: Load on idle
+// 4. Optional: Load on demand
+
+class LoadingStrategy {
+    static async loadCriticalData() {
+        // Smallest possible dataset for initial render
+        return await fetch('/api/critical').then(r => r.json());
+    }
+    
+    static loadEnhancementData() {
+        if ('requestIdleCallback' in window) {
+            requestIdleCallback(() => {
+                this.loadSecondaryData();
+            });
+        } else {
+            setTimeout(() => this.loadSecondaryData(), 1);
+        }
+    }
+    
+    static async loadOnScroll(element, callback) {
+        const observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                callback();
+                observer.disconnect();
+            }
+        }, {
+            rootMargin: '100px'
+        });
+        
+        observer.observe(element);
+    }
+}
+```
+
+### Elegant Loading Components
+```css
+/* Inline Loading Bar */
+.loading-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+    z-index: 9999;
+}
+
+.loading-bar.loading {
+    transform: scaleX(0.3);
+}
+
+.loading-bar.done {
+    transform: scaleX(1);
+    transition-duration: 0.1s;
+}
+
+/* Content Placeholder */
+.content-placeholder {
+    padding: var(--space-6);
+    text-align: center;
+}
+
+.placeholder-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto var(--space-4);
+    opacity: 0.3;
+}
+
+.placeholder-text {
+    color: var(--gray-5);
+    font-size: 0.875rem;
+}
+
+/* Skeleton Screen */
+.skeleton-card {
+    padding: var(--space-4);
+    background: var(--paper);
+    border-radius: 12px;
+    box-shadow: var(--shadow-subtle);
+}
+
+.skeleton-image {
+    width: 100%;
+    height: 200px;
+    background: var(--gray-1);
+    border-radius: 8px;
+    margin-bottom: var(--space-3);
+}
+
+.skeleton-title {
+    height: 24px;
+    background: var(--gray-1);
+    border-radius: 4px;
+    margin-bottom: var(--space-2);
+    width: 70%;
+}
+
+.skeleton-text {
+    height: 16px;
+    background: var(--gray-1);
+    border-radius: 4px;
+    margin-bottom: var(--space-2);
+}
+
+.skeleton-text:last-child {
+    width: 85%;
+}
+```
+
+## Performance Best Practices
+
+1. **Resource Hints**
+   - Use preconnect for external domains
+   - Preload critical resources
+   - Prefetch next-page resources
+
+2. **Code Splitting**
+   - Separate critical from non-critical CSS
+   - Load JavaScript modules on demand
+   - Use dynamic imports for large components
+
+3. **Data Loading**
+   - Implement request deduplication
+   - Cache responses appropriately
+   - Use compression (gzip/brotli)
+   - Stream large datasets
+
+4. **Image Optimization**
+   - Use responsive images with srcset
+   - Implement lazy loading
+   - Serve WebP/AVIF with fallbacks
+   - Use placeholder images
+
+5. **Monitoring**
+   - Track Core Web Vitals
+   - Monitor JavaScript errors
+   - Log slow API responses
+   - Measure user interactions
+
+Remember: Speed is a feature. Every millisecond counts in creating a premium experience.

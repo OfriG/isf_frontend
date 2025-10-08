@@ -1,3 +1,7 @@
+import Hero from "@/components/Home_page/Hero/Hero";
+import Banner from "@/components/Home_page/Banner/Banner";
+import React from "react";
+
 import Link from 'next/link';
 async function getAllTeamMembers() {
   const membersPromise = await fetch('http://localhost:1337/api/members');
@@ -10,6 +14,10 @@ export default async function Home() {
 
   return (
     <div>
+      <Hero/>
+      <Banner/>
+      
+    </div>
       <h1>Our Team</h1>
       <div>
         {members.map(member => {
