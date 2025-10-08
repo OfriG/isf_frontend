@@ -4,6 +4,7 @@ footer {
     display: flex;
     position: relative;
     min-height: 200px;
+    margin-bottom: pxToRem(15);
 
     .stars-container {
         position: absolute;
@@ -25,73 +26,21 @@ footer {
             display: flex;
             gap: pxToRem(160); 
         }
-        .newsletter {
-            padding: pxToRem(0) pxToRem(24.13) pxToRem(47.31) pxToRem(26.14);
+        .newsletter_menu {
+            margin: pxToRem(17.53) pxToRem(0) pxToRem(47.31) pxToRem(0);
+            color: var(--text-primary);
             display: flex;
-            flex-direction: column;
-            gap: pxToRem(10.58);
-;
-            .newsletter_header {
-                width: pxToRem(240);
-                color: var(--text-primary);
-                font-size: pxToRem(24);
-                font-weight: 400;
-                line-height: normal;
-                font-style: normal;
-            }
-            .newsletter_description {
-                width: pxToRem(264.666);
-                color: var(--text-primary);
-                font-size: pxToRem(12);
-                font-weight: 300;
-                line-height: normal;
-                font-style: normal;
-            }
-            .newsletter_email{
-                width: pxToRem(321);
-height: pxToRem(40);
-flex-shrink: 0;
-border-radius: pxToRem(2);
-border: 0.5px solid var(--text-primary);
-background: var(--text-primary);
-            }
-            .newsletter_line {
-                width: pxToRem(318);
-                height: pxToRem(0.2);
-
-                background: var(--text-primary);
-            }
-            .newsletter_button {
-                width: pxToRem(101);
-                height: pxToRem(27);
-                color: var(--text-primary);
-                display: inline-flex;
-padding: pxToRem(6.03) pxToRem(20.1);
-justify-content: center;
-align-items: center;
-gap: pxToRem(5.025);border-radius: pxToRem(1.005);
-border: pxToRem(1.005) solid var(--text-primary);color: var(--text-primary);
-font-size: pxToRem(12.06);
-font-style: normal;
-font-weight: 700;
-line-height: normal;
-            }
-            .newsletter_menu {
-                margin: pxToRem(17.53) pxToRem(0) pxToRem(47.31) pxToRem(0);
-                color: var(--text-primary);
+            flex-direction: row;
+            .newsletter_left_menu {
+                
                 display: flex;
-                flex-direction: row;
-                .newsletter_left_menu {
-                    
-                    display: flex;
-                    flex-direction: column;
-                    gap: pxToRem(10.58);
-                }
-                .newsletter_right_menu {
-                    display: flex;
-                    flex-direction: column;
-                    gap: pxToRem(10.58);
-                }
+                flex-direction: column;
+                gap: pxToRem(10.58);
+            }
+            .newsletter_right_menu {
+                display: flex;
+                flex-direction: column;
+                gap: pxToRem(10.58);
             }
         }
 
