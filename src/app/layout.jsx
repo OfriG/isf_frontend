@@ -8,12 +8,27 @@ export const metadata = {
 };
 
 export default async function RootLayout({ children }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}/api/sections?populate=*`, {
-    cache: "no-store",
-  });
-
-  const sections = await res.json();
-  const links = sections?.data?.[0]?.menu || [];
+  let links = [];
+  
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+    
+    const res = await fetch(`${process.env.NEXT_PUBLIC_STRAPI_URL || 'http://localhost:1337'}/api/sections?populate=*`, {
+      cache: "no-store",
+      signal: controller.signal,
+    });
+    
+    clearTimeout(timeoutId);
+    
+    if (res.ok) {
+      const sections = await res.json();
+      links = sections?.data?.[0]?.menu || [];
+    }
+  } catch (error) {
+    // Fail silently during build - Header will use default/empty links
+    console.log('Failed to fetch menu links:', error.message);
+  }
 
   return (
     <html lang="en">
