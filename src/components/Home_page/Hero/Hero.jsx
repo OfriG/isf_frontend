@@ -43,16 +43,31 @@ export default function Hero() {
             .catch(() => setError(true));
     }, []);
 
-    if (error) {
-        return null; // Render nothing if data unavailable
+    if (error || (heroData && heroData.length === 0)) {
+        // Render fallback hero content when Strapi data unavailable
+        return (
+            <section className="homepage-hero homepage-hero-block bg-gradient-to-br from-gray-900 to-blue-900 text-white py-20">
+                <div className="responsive-container max-w-6xl mx-auto px-4">
+                    <div className="content-wrapper text-center">
+                        <h1 className="text-5xl md:text-7xl font-bold mb-6">
+                            Shaping the future of space
+                            <br />
+                            <span className="gradient-text bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">Together</span>
+                        </h1>
+                        <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+                            The Israel Space Forum is dedicated to advancing Israel's position in the global space industry through innovation, collaboration, and strategic partnerships.
+                        </p>
+                        <a className="joinud-btn bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors" href="/join-us">
+                            JOIN US
+                        </a>
+                    </div>
+                </div>
+            </section>
+        );
     }
 
     if (!heroData) {
-        return <div>Loading...</div>;
-    }
-    
-    if (heroData.length === 0) {
-        return null; // Render nothing if no hero data
+        return <div className="py-20 text-center">Loading...</div>;
     }
     
     return (

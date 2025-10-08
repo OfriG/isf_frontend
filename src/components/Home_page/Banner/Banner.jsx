@@ -41,12 +41,49 @@ export default function Banner(){
             .catch(() => setError(true));
     }, []);
 
-    if (error) {
-        return null; // Render nothing if data unavailable
-    }
-
-    if (!bannerData) {
-        return <div>Loading...</div>;
+    if (error || !bannerData || bannerData.length === 0) {
+        // Render fallback banner content when Strapi data unavailable
+        return (
+            <div className="bg-gradient-to-r from-green-500 to-blue-500 h-full py-16">
+                <div className="container mx-auto px-4">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between max-w-6xl mx-auto">
+                        <div className="text-center md:text-left mb-8 md:mb-0">
+                            <h1 className="text-white text-4xl md:text-6xl font-normal leading-normal uppercase mb-4">
+                                63M$
+                            </h1>
+                            <p className="text-white text-lg md:text-2xl font-normal leading-normal uppercase">
+                                RAISED IN 2024 BY ISRAELI SPACE-RELATED STARTUPS
+                            </p>
+                        </div>
+                        
+                        <div className="hidden md:block w-px h-20 bg-white"></div>
+                        
+                        <div className="text-center md:text-left mb-8 md:mb-0">
+                            <h1 className="text-white text-4xl md:text-6xl font-normal leading-normal uppercase mb-4">
+                                60
+                            </h1>
+                            <p className="text-white text-lg md:text-2xl font-normal leading-normal uppercase">
+                                SPACE COMPANIES AND STARTUPS
+                            </p>
+                        </div>
+                        
+                        <div className="hidden md:block w-px h-20 bg-white"></div>
+                        
+                        <div className="text-center md:text-left">
+                            <h1 className="text-white text-4xl md:text-6xl font-normal leading-normal uppercase mb-4">
+                                8TH
+                            </h1>
+                            <p className="text-white text-lg md:text-2xl font-normal leading-normal uppercase">
+                                NATION TO SEND A SATELLITE INTO ORBIT
+                            </p>
+                        </div>
+                    </div>
+                    <div className="text-center mt-8">
+                        <p className="text-white text-sm opacity-80">* DATA PROVIDED BY STARTUP NATION CENTRAL</p>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     // Extract banner component from the data
@@ -55,7 +92,7 @@ export default function Banner(){
     );
 
     if (!bannerComponent) {
-        return null; // Render nothing if no banner data
+        return null; // This should not happen now due to the check above
     }
 
     return (

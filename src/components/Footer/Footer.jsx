@@ -20,7 +20,8 @@ async function getFooterData() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
 
-    const [oldRes, newRes, galleryRes] = await Promise.all([
+    // Fetch all endpoints but handle failures individually
+    const [oldRes, newRes, galleryRes] = await Promise.allSettled([
       fetch(urls.oldFooter, { cache: 'no-store', signal: controller.signal }),
       fetch(urls.newFooter, { cache: 'no-store', signal: controller.signal }),
       fetch(urls.gallery, { cache: 'no-store', signal: controller.signal })
@@ -28,20 +29,35 @@ async function getFooterData() {
 
     clearTimeout(timeoutId);
 
-    if (!oldRes.ok || !newRes.ok || !galleryRes.ok) {
-      throw new Error('Failed to fetch footer data');
+    // Extract data from successful requests only
+    let oldData = null;
+    let newData = null;
+    let galleryData = null;
+
+    if (oldRes.status === 'fulfilled' && oldRes.value.ok) {
+      oldData = await oldRes.value.json();
     }
 
-    const [oldData, newData, galleryData] = await Promise.all([oldRes.json(), newRes.json(), galleryRes.json()]);
+    if (newRes.status === 'fulfilled' && newRes.value.ok) {
+      newData = await newRes.value.json();
+    }
+
+    if (galleryRes.status === 'fulfilled' && galleryRes.value.ok) {
+      galleryData = await galleryRes.value.json();
+    }
 
     return {
-      oldFooter: oldData.data,
-      newFooter: newData.data,
-      gallery: galleryData.data
+      oldFooter: oldData?.data,
+      newFooter: newData?.data,
+      gallery: galleryData?.data
     };
   } catch (error) {
     console.log('Failed to fetch footer data:', error.message);
-    return null;
+    return {
+      oldFooter: null,
+      newFooter: null,
+      gallery: null
+    };
   }
 }
 
@@ -53,7 +69,8 @@ export default function Footer() {
     getFooterData()
       .then(data => {
         setFooterData(data);
-        if (!data) {
+        // Only set error if we couldn't get the essential oldFooter data
+        if (!data || !data.oldFooter) {
           setError(true);
         }
       })
@@ -75,19 +92,38 @@ export default function Footer() {
   }, []);
 
   if (error) {
-    return null; // Render nothing if data unavailable
+    // Render a minimal footer if data is completely unavailable
+    return (
+      <footer style={{ background: 'black', minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ color: 'white', textAlign: 'center' }}>
+          <Logo width={52} height={40} />
+          <p style={{ marginTop: '1rem', fontSize: '0.875rem' }}>Footer data unavailable</p>
+        </div>
+      </footer>
+    );
   }
 
   if (!footerData) {
-    return <div>Loading...</div>;
+    return (
+      <footer style={{ background: 'black', minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ color: 'white' }}>Loading footer...</div>
+      </footer>
+    );
   }
 
   const oldFooter = footerData.oldFooter;
   const gallery = footerData.gallery;
   
-  // If essential data is missing, don't render the footer
+  // If essential data is missing, render minimal footer
   if (!oldFooter) {
-    return null;
+    return (
+      <footer style={{ background: 'black', minHeight: '100px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ color: 'white', textAlign: 'center' }}>
+          <Logo width={52} height={40} />
+          <p style={{ marginTop: '1rem', fontSize: '0.875rem' }}>Footer content unavailable</p>
+        </div>
+      </footer>
+    );
   }
   
   // Debug: Log the footer data to see if logos are loaded

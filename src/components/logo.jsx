@@ -34,6 +34,21 @@ export default function Logo({ width = 52.309, height = 40.671 }) {
   if (loading) {
     return <div style={{ width, height }}>Loading...</div>;
   }
+  
+  if (!logoUrl) {
+    // Use static logo as fallback when Strapi is unavailable
+    return (
+      <Image
+        src="/logo.webp"
+        alt="Israel Space Forum Logo"
+        width={width}
+        height={height}
+        priority
+        style={{ width: 'auto', height: 'auto' }}
+      />
+    );
+  }
+  
   return (
     <Image
       src={logoUrl}
@@ -41,6 +56,7 @@ export default function Logo({ width = 52.309, height = 40.671 }) {
       width={width}
       height={height}
       priority
+      style={{ width: 'auto', height: 'auto' }}
     />
   );
 }
